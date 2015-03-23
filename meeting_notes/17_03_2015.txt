@@ -1,0 +1,21 @@
+1. User się loguje i subskrybuje się na "niebieskie samochody" i
+2. przekazane zapytanie do crawlerów.
+to czy rozsyła do wszystkich czy komunikuje się do jednego.
+
+P2P rozproszony. Nie ma tak że któryś crawler ma wszystkie informacje.
+a) geolokacja - crawler per przedział IP? - jedna baza danych
+b) crawler per zapytanie  - wyniki może trzymać lokalnie a potem ewentuanie równoważenie zapytań 
+c) nie może być Master slave żadnego. 
+d) potem jak pytanie od klienta, to pytamy o 
+e) albo odpalane tylko u usera, albo jakiś mini serverek który ma informacje o 
+
+scrupy - ma podobieństwo słów?
+szukamy semantic web crawlera = http://www.ldodds.com/projects/slug/
+
+Dostęp do wszystkiego na maila.
+
+Prentacja - którą architekturę, czy będzie częśc kliencka czy serverowa,jakie info się wymienia między crawlerami + wyniki researchu o crawlerze semantyczym
+
+
+
+
