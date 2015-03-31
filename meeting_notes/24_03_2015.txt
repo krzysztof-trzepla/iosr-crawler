@@ -1,0 +1,14 @@
+Na nastepne zajęcia :
+- przykłąd ze sluga
+- przykład z Jade'a
+
+
+Przygotować - cały obraz jak po kolei się dzieje. Jakie interfejsy gdzie, co ląduje w Riaku.
+
+Diagram architektury. Jaka głębokość crawling? 
+
+Nie powinniśmy crawlować innych serwisów przeszukujących.
+
+"Jak skompilować Javę" - nie zwracać konkretnej strony na stacku, tylko "stackoverfow.com".
+
+Jakby trzeba maszyny do Crawlera, to wystarczy napisać o maszynę.

@@ -1,0 +1,6 @@
+- 1 crawler obsługuje kilka domen
+- znaleźć zbiór stron startowych do crawlowania
+- rysunek architektoniczny + opis technologii + szkielet apki webowej
+- wymagania - co użytkownik będzie musiał wprowadzić do systemu żeby wykonać cała akcję
+- use casy opisane
+
