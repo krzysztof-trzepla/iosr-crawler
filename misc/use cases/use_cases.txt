@@ -1,0 +1,3 @@
+1. Jako użytkownik chciałbym się zalogować, aby mieć możliwość korzystania z crawlera.
+2. Jako zalogowany użytkownik chciałbym dodać nowe wyrażenie do crawlowania stron internetowych.
+3. Jako zalogowany użytkownik chciałbym móc uzyskać wyniki crawlowania stron internetowych względem wczęsniej zapisanych wyrażeń.
