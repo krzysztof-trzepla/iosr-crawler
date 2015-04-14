@@ -12,6 +12,7 @@
 <a href="/logout">Logout</a>
 {% else %}
 <a href="{% url 'social:begin' 'twitter' %}">Login with Twitter</a>
+<a href="{% url 'social:begin' 'google-oauth2' %}">Login with Google</a>
 {% endif %}
 
 </body>
