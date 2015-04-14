@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Log In</title>
+</head>
+<body>
+
+{% if user and not user.is_anonymous %}
+<a>Welcome, {{ user.get_full_name }}!</a>
+<br>
+<a href="/logout">Logout</a>
+{% else %}
+<a href="{% url 'social:begin' 'twitter' %}">Login with Twitter</a>
+{% endif %}
+
+</body>
+</html>

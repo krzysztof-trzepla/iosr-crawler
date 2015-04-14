@@ -9,5 +9,6 @@ urlpatterns = [
     # url(r'^blog/', include('blog.urls')),
 
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^$', include('ui.urls')),
+    url('', include('social.apps.django_app.urls', namespace='social')),
+    url('', include('ui.urls')),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
