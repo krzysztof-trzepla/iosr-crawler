@@ -25,3 +25,14 @@ The list of requirements is presented below. It is an output of `pip freeze` com
 * requests-oauthlib==0.4.2
 * six==1.9.0
 
+Architecture
+------------
+
+We distinguish three main parts in our system:
+
+* user interface implemented using Django framework
+* web crawler build on `Scrupy` library
+* natural language processor using nltk library enables semantic recognition
+
+User authentication is achieved with OAuth2 standard and third party providers.
+In order to store crawling results distributed Raik database is used.
