@@ -1,0 +1,3 @@
+1. Na następny raz - przerobić architekturę - diagram z blokami + uwzględnienie architektury rozproszonej + opis słowny tego co opisał Krzysiek ostatnio.
+2. Na następny raz - na podstawie prototypu - komponent semantycznego przetwarzania zapytań + riak na 1 nodzie
+3. wpisuję zapytanie i wyskakują słowa kluczowe 
