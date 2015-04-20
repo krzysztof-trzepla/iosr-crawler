@@ -1,8 +1,8 @@
 IOSR crawler
 ============
 
-Semantic web crawler developed during Software Engineering of Distributed Systems course at AGH university of Science 
-and Technology, Cracow 2015.
+Semantic web crawler developed during Software Engineering of Distributed
+Systems course at AGH university of Science and Technology, Cracow 2015.
 
 Prerequisites
 -------------
