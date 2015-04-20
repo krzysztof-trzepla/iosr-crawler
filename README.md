@@ -17,13 +17,23 @@ Requirements
 The list of requirements is presented below. It is an output of `pip freeze`
 command run in virtual environment.
 
+* cffi==0.9.2
+* cryptography==0.8.2
 * Django==1.8
+* enum34==1.0.4
+* nltk==3.0.2
 * oauthlib==0.7.2
+* protobuf==2.5.0
+* pyasn1==0.1.7
+* pycparser==2.10
 * PyJWT==1.0.1
+* pyOpenSSL==0.15.1
 * python-openid==2.2.5
 * python-social-auth==0.2.5
 * requests==2.6.0
 * requests-oauthlib==0.4.2
+* riak==2.2.0
+* riak-pb==2.0.0.16
 * six==1.9.0
 
 Architecture
