@@ -2,8 +2,10 @@ from django.contrib import messages
 from django.shortcuts import redirect, render
 from django.contrib.auth import logout as auth_logout
 from django.contrib.auth.decorators import login_required
+
 from nlp import extractor
 from .forms import SentenceForm
+from crawler import Crawler
 
 
 def login(request):
@@ -16,12 +18,18 @@ def home(request):
         form = SentenceForm(request.POST)
         if form.is_valid():
             keywords = extractor.keywords(form.cleaned_data['sentence'])
+            print str(keywords)
+            crawler = Crawler.IOSRCrawler()
+            for keyword in keywords:
+                crawler.addRequestedPhrase(str(keyword))
+            crawler.startCrawling()
             return render(request, 'ui/home.html',
                           {'form': SentenceForm(), 'keywords': keywords})
         else:
             messages.add_message(request, messages.ERROR, 'Invalid sentence.')
     form = SentenceForm()
     return render(request, 'ui/home.html', {'form': form})
+
 
 
 def logout(request):
