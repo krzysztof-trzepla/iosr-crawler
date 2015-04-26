@@ -29,7 +29,6 @@ class CrawlerEngine:
             crawler.start()
             Thread(target=reactor.run, args=(False,)).start()
 
-
     class CustomSpider(CrawlSpider):
 
         name = "iosr_spider"

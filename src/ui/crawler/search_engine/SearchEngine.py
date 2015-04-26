@@ -38,7 +38,7 @@ class SearchEngine():
         return {"url": url, "results": results}
 
     def search(self, toSearch):
-        #TODO efektywniejsze i nie takie naiwne szukanie
+        #TODO efektywniejsze i nie takie naiwne szukanie , moze regex? lub zewnetrza biblioteka
         results = []
         toSearch = toSearch.lower()
         for searchedPhrase in self.requestedPhrases:

@@ -18,10 +18,9 @@ def home(request):
         form = SentenceForm(request.POST)
         if form.is_valid():
             keywords = extractor.keywords(form.cleaned_data['sentence'])
-            # TOOD call to Crawler Engine (should be singleton) -> crawl for
             crawler = CrawlerEngine()
             for keyword in keywords:
-                crawler.addRequest(keyword)
+                crawler.addRequest(str(keyword))
             crawler.start_crawling()
             return render(request, 'ui/home.html',
                           {'form': SentenceForm(), 'keywords': keywords})
