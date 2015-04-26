@@ -47,11 +47,4 @@ class SearchEngine():
         return results
 
 
-se = SearchEngine()
-print se.get_phrases()
-se.add_phrase("zupa")
-se.save_phrases_list_to_db()
-se.refresh_phrases_list()
-print se.get_phrases()
-print se.search("lorem ipsum python world war zupa")
 
