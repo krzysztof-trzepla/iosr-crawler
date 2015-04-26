@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 
 from nlp import extractor
 from .forms import SentenceForm
-from crawler import Crawler
+from .crawler.CrawlerEngine import CrawlerEngine
 
 
 def login(request):
@@ -18,11 +18,11 @@ def home(request):
         form = SentenceForm(request.POST)
         if form.is_valid():
             keywords = extractor.keywords(form.cleaned_data['sentence'])
-            print str(keywords)
-            crawler = Crawler.IOSRCrawler()
+            # TOOD call to Crawler Engine (should be singleton) -> crawl for
+            crawler = CrawlerEngine()
             for keyword in keywords:
-                crawler.addRequestedPhrase(str(keyword))
-            crawler.startCrawling()
+                crawler.addRequest(keyword)
+            crawler.start_crawling()
             return render(request, 'ui/home.html',
                           {'form': SentenceForm(), 'keywords': keywords})
         else:
