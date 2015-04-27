@@ -2,18 +2,37 @@
 <html>
 <head lang="en">
     <meta charset="UTF-8">
-    <title>Log In</title>
+    <title>Sign In</title>
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+    <link rel="stylesheet"
+          href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    {% load staticfiles %}
+    <link rel="stylesheet" href="{% static 'ui/css/bootstrap-social.css' %}"/>
+    <link rel="stylesheet" href="{% static 'ui/css/login.css' %}"/>
 </head>
 <body>
 
-{% if user and not user.is_anonymous %}
-<a>Welcome, {{ user.get_full_name }}!</a>
-<br>
-<a href="/logout">Logout</a>
-{% else %}
-<a href="{% url 'social:begin' 'twitter' %}">Login with Twitter</a>
-<a href="{% url 'social:begin' 'google-oauth2' %}">Login with Google</a>
-{% endif %}
+<div class="container">
 
+    <h1 style="text-align: center">Welcome to Semantic Web Crawler</h1>
+
+    <form class="form-signin">
+        {% if user and not user.is_anonymous %}
+        <a class="btn btn-block btn-info" href="/home">Home</a>
+        <a class="btn btn-block btn-danger" href="/logout">Sign out</a>
+        {% else %}
+        <a href="{% url 'social:begin' 'google-oauth2' %}"
+           class="btn btn-block btn-social btn-google">
+            <i class="fa fa-google"></i> Sign in with Google
+        </a>
+        {% endif %}
+    </form>
+
+</div>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 </body>
 </html>
