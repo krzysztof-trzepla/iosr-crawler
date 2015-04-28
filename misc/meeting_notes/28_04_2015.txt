@@ -1,0 +1,4 @@
+połączenia z bazą danych + zrzucanie wyników do bazy
+wyświetlanie zapytań w formie linków
+TEST + raport z pokrycia!!! (część ui + dao)
+następne spotkanie 19.05
