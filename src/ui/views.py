@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 
 from nlp import extractor
 from .forms import SentenceForm
-from .crawler.CrawlerEngine import CrawlerEngine
+from engine.CrawlerEngine import CrawlerEngine
 
 
 def login(request):
@@ -28,7 +28,6 @@ def home(request):
             messages.add_message(request, messages.ERROR, 'Invalid sentence.')
     form = SentenceForm()
     return render(request, 'ui/home.html', {'form': form})
-
 
 
 def logout(request):

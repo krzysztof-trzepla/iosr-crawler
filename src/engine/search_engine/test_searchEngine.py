@@ -1,5 +1,7 @@
 from unittest import TestCase
-from SearchEngine import SearchEngine
+
+from src.engine.search_engine import SearchEngine
+
 
 class TestSearchEngine(TestCase):
 
