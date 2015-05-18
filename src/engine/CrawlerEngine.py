@@ -1,3 +1,4 @@
+import os
 from threading import Thread
 
 from scrapy.crawler import Crawler
@@ -7,18 +8,26 @@ from scrapy.settings import Settings
 from scrapy.selector import Selector
 from twisted.internet import reactor
 from .search_engine.SearchEngine import SearchEngine
-import os
+from .db_engine.DbEngine import DbEngine
+from nlp import extractor
 
 
-class CrawlerEngine:
-    searchEngine = SearchEngine()
+class CrawlerEngine(object):
+    db_engine = DbEngine()
+    search_engine = SearchEngine()
 
-    def __init__(self):
-        pass
+    def add_query(self, user, query):
+        keywords = extractor.keywords(query)
+        self.db_engine.add_query(user, query)
+        self.db_engine.add_keywords(keywords)
+        self.search_engine.reload_keywords()
+        self.start_crawling()
 
-    def addRequest(self, phrase):
-        self.searchEngine.add_phrase(phrase)
-        self.searchEngine.save_phrases_list_to_db()
+    def get_queries(self, user):
+        return self.db_engine.get_queries(user)
+
+    def get_urls(self, keywords):
+        return self.db_engine.get_urls(keywords)
 
     def start_crawling(self):
         if not reactor.running:
@@ -30,25 +39,26 @@ class CrawlerEngine:
             Thread(target=reactor.run, args=(False,)).start()
 
     class CustomSpider(CrawlSpider):
-        name = "iosr_spider"
-        allowed_domains = [eval(open(
-            os.path.join(os.path.dirname(__file__), "conf.crawler")).read())[
-                               "allowed_domains"]]
-        start_urls = [eval(open(
-            os.path.join(os.path.dirname(__file__), "conf.crawler")).read())[
-                          "start_urls"]]
+        name = "spider"
+        config_path = os.path.join(os.path.dirname(__file__), "conf.crawler")
+        with open(config_path) as config_file:
+            config = eval(config_file.read())
+            allowed_domains = [config["allowed_domains"]]
+            start_urls = [config["start_urls"]]
+
         rules = (
             Rule(
                 SgmlLinkExtractor(), callback='parse_page', follow=True
             ),
         )
 
-        def parse_page(self, response):
-            # geting plain text from excluding scripts
+        @staticmethod
+        def parse_page(response):
             text = ''.join(Selector(response).xpath(
-                "//body/descendant-or-self::*[not(self::script)]/text()").extract()).strip()
+                "//body/descendant-or-self::*[not(self::script)]/text()").
+                extract()).strip()
             url = response.url
-            CrawlerEngine.searchEngine.search_in_url(url, text)
+            CrawlerEngine.search_engine.search_in_url(url, text)
 
 
 

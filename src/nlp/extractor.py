@@ -27,13 +27,13 @@ cfg["JJ+JJ"] = "JJ"
 cfg["JJ+NN"] = "NNI"
 
 
-class NPExtractor(object):
-    def __init__(self, sentence):
-        self.sentence = sentence
+class NLPExtractor(object):
+    def __init__(self, query):
+        self.query = query
 
-    def tokenize_sentence(self, sentence):
-        '''Split the sentence into singlw words/tokens'''
-        tokens = nltk.word_tokenize(sentence)
+    def tokenize_query(self, query):
+        '''Split the query into single words/tokens'''
+        tokens = nltk.word_tokenize(query)
         return tokens
 
     def normalize_tags(self, tagged):
@@ -52,10 +52,10 @@ class NPExtractor(object):
             n_tagged.append((t[0], t[1]))
         return n_tagged
 
-    # Extract the main topics from the sentence
+    # Extract the main topics from the query
     def extract(self):
 
-        tokens = self.tokenize_sentence(self.sentence)
+        tokens = self.tokenize_query(self.query)
         tags = self.normalize_tags(bigram_tagger.tag(tokens))
 
         merge = True
@@ -82,6 +82,6 @@ class NPExtractor(object):
         return matches
 
 
-def keywords(sentence):
-    np_extractor = NPExtractor(sentence)
-    return np_extractor.extract()
+def keywords(query):
+    np_extractor = NLPExtractor(query)
+    return map(lambda keyword: keyword.lower(), np_extractor.extract())

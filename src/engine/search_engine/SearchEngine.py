@@ -1,53 +1,28 @@
-import os
+from engine.db_engine.DbEngine import DbEngine
 
 
-class SearchEngine():
-    # TODO call to DB (?)
-    requestedPhrases = eval(
-        open(os.path.join(os.path.dirname(__file__), "tmp_db.phrases")).read())
-
+class SearchEngine(object):
     def __init__(self):
-        pass
+        self.db_engine = DbEngine()
+        self.keywords = self.db_engine.get_keywords()
+        print(self.keywords)
 
-    def __str__(self):
-        return str(self.requestedPhrases)
+    def reload_keywords(self):
+        self.keywords = self.db_engine.get_keywords()
+        print(self.keywords)
 
-    def get_phrases(self):
-        return self.requestedPhrases
+    def search_in_url(self, url, content):
+        keywords = self.search(content.lower())
+        if len(keywords) > 0:
+            print(keywords)
+        self.db_engine.add_url(url, keywords)
 
-    def add_phrase(self, phraseToSearch):
-        self.requestedPhrases.append(phraseToSearch.lower())
-
-    def delete_phrase(self, phraseToDelete):
-        if phraseToDelete in self.requestedPhrases:
-            self.requestedPhrases.remove(phraseToDelete)
-
-    def refresh_phrases_list(self):
-        # TODO call to db (?)
-        self.requestedPhrases = eval(open(
-            os.path.join(os.path.dirname(__file__), "tmp_db.phrases")).read())
-
-    def save_phrases_list_to_db(self):
-        # TODO call to db
-        file = open(os.path.join(os.path.dirname(__file__), "tmp_db.phrases"),
-                    "w+")
-        file.write(str(self.requestedPhrases))
-        file.flush()
-        file.close()
-
-    def search_in_url(self, url, text):
-        results = self.search(text)
-        print {"url": url, "results": results}
-        return {"url": url, "results": results}
-
-    def search(self, toSearch):
-        # TODO efektywniejsze i nie takie naiwne szukanie , moze regex? lub zewnetrza biblioteka
-        results = []
-        toSearch = toSearch.lower()
-        for searchedPhrase in self.requestedPhrases:
-            if searchedPhrase in toSearch:
-                results.append(searchedPhrase)
-        return results
+    def search(self, content):
+        keywords = set()
+        for keyword in self.keywords:
+            if keyword in content:
+                keywords.add(keyword)
+        return keywords
 
 
 
