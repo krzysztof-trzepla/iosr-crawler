@@ -4,98 +4,32 @@ from SearchEngine import SearchEngine
 
 
 class TestSearchEngine(TestCase):
-
-    def test_addingPhrasesToEmptySearchEngineShouldAddPhraseToSearchEngine(self):
+    def test_search_should_return_two_element_keyword_list(self):
         # given
-        searchEngine = SearchEngine()
-        size = len(searchEngine.get_phrases())
-        phrase1 = "python"
+        search_engine = SearchEngine()
+        search_engine.keywords = ['python', 'jython', 'cpython']
+
         # when
-        searchEngine.add_phrase(phrase1)
-        # then
-        self.assertTrue(phrase1 in searchEngine.get_phrases())
-        self.assertEqual(len(searchEngine.get_phrases()), size+1)
-
-
-    def test_removingPhraseEngineShouldRemovePhraseFromSearchEngineIfExist(self):
-        # given
-        searchEngine = SearchEngine()
-        size = len(searchEngine.get_phrases())
-        phrase1 = "python"
-        phrase2 = "jython"
-        phrase3 = "cpython"
-
-        searchEngine.add_phrase(phrase1)
-        searchEngine.add_phrase(phrase2)
-        searchEngine.add_phrase(phrase3)
-        # when
-        searchEngine.delete_phrase(phrase2)
-        # then
-        self.assertTrue(phrase2 not in searchEngine.get_phrases())
-        self.assertEqual(len(searchEngine.get_phrases()),  size+2)
-
-    def test_removingPhraseWhichIsNotInSearchEngineShouldDoNothing(self):
-        # given
-        searchEngine = SearchEngine()
-        size = len(searchEngine.get_phrases())
-        phrase1 = "python"
-        phrase2 = "jython"
-        phrase3 = "cpython"
-
-        searchEngine.add_phrase(phrase1)
-        searchEngine.add_phrase(phrase2)
-        searchEngine.add_phrase(phrase3)
-        # when
-        searchEngine.delete_phrase("cokolwiek")
-        # then
-        self.assertTrue(phrase1 in searchEngine.get_phrases())
-        self.assertTrue(phrase2 in searchEngine.get_phrases())
-        self.assertTrue(phrase3 in searchEngine.get_phrases())
-        self.assertEqual(len(searchEngine.get_phrases()),  size +3)
-
-    def test_searchingShouldReturnTwoElementedResultsList(self):
-        # given
-        searchEngine = SearchEngine()
-        searchEngine.requestedPhrases = []
-        phrase1 = "pythonn"
-        phrase2 = "jython"
-        phrase3 = "cpython"
-
-        searchEngine.add_phrase(phrase1)
-        searchEngine.add_phrase(phrase2)
-        searchEngine.add_phrase(phrase3)
-        # when
-        textToSearch = """ Jython is very good programining language.
-        cpython too.
-         """
-        results = searchEngine.search(textToSearch)
+        text = 'Jython is very good programming language. Cpython too.'
+        keywords = search_engine.search(text)
 
         # then
-        self.assertTrue(phrase1 not in results)
-        self.assertTrue(phrase2 in results)
-        self.assertTrue(phrase3 in results)
-        self.assertEqual(len(results), 2)
+        self.assertTrue('python' not in keywords)
+        self.assertTrue('jython' in keywords)
+        self.assertTrue('cpython' in keywords)
+        self.assertEqual(len(keywords), 2)
 
-    def test_searchingShouldReturnEmptyListResults(self):
+    def test_search_should_return_empty_keyword_list(self):
         # given
-        searchEngine = SearchEngine()
-        searchEngine.requestedPhrases = []
-        phrase1 = "python"
-        phrase2 = "jython"
-        phrase3 = "cpython"
+        search_engine = SearchEngine()
+        search_engine.keywords = ['python', 'jython', 'cpython']
 
-        searchEngine.add_phrase(phrase1)
-        searchEngine.add_phrase(phrase2)
-        searchEngine.add_phrase(phrase3)
         # when
-        textToSearch = """ fsdsadsa sadasdas  fsadsa afdasdas daw dawxasd gweghtrnhfdf
-        dfdsf s sdfg s.
-        cpythsdson too.
-         """
-        results = searchEngine.search(textToSearch)
+        text = 'This is a sample sentence.'
+        keywords = search_engine.search(text)
 
         # then
-        self.assertTrue(phrase1 not in results)
-        self.assertTrue(phrase2 not in results)
-        self.assertTrue(phrase3 not in results)
-        self.assertEqual(len(results), 0)
+        self.assertTrue('python' not in keywords)
+        self.assertTrue('jython' not in keywords)
+        self.assertTrue('cpython' not in keywords)
+        self.assertEqual(len(keywords), 0)
