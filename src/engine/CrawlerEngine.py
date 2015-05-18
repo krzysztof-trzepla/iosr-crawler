@@ -16,15 +16,15 @@ class CrawlerEngine(object):
     db_engine = DbEngine()
     search_engine = SearchEngine()
 
-    def add_query(self, user, query):
+    def add_query(self, user_id, query):
         keywords = extractor.keywords(query)
-        self.db_engine.add_query(user, query)
+        self.db_engine.add_query(user_id, query)
         self.db_engine.add_keywords(keywords)
         self.search_engine.reload_keywords()
         self.start_crawling()
 
-    def get_queries(self, user):
-        return self.db_engine.get_queries(user)
+    def get_queries(self, user_id):
+        return self.db_engine.get_queries(user_id)
 
     def get_urls(self, keywords):
         return self.db_engine.get_urls(keywords)

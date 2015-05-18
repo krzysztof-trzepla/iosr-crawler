@@ -19,7 +19,7 @@ def home(request):
         if form.is_valid():
             query = form.cleaned_data['query']
             crawler = CrawlerEngine()
-            crawler.add_query(request.user, query)
+            crawler.add_query(request.user.id, query)
             messages.add_message(request, messages.SUCCESS,
                                  'Query successfully added.')
             return render(request, 'ui/home.html', {'form': QueryForm()})
@@ -42,7 +42,7 @@ def query(request):
 def queries(request):
     crawler = CrawlerEngine()
     queries = map(lambda query: (query, ','.join(extractor.keywords(query))),
-                  crawler.get_queries(request.user))
+                  crawler.get_queries(request.user.id))
     return render(request, 'ui/queries.html', {'queries': queries})
 
 

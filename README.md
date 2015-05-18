@@ -105,3 +105,37 @@ of IP addresses or given domain.
 2. User collects crawling results.
 3. Crawling results are retrieve from database and presented to the user.
 4. User logs out.
+
+##### Coverage report #####
+
+<pre><code>
+Name                                     Stmts   Miss  Cover
+------------------------------------------------------------
+__init__                                     0      0   100%
+crawler/__init__                             0      0   100%
+crawler/config                               4      0   100%
+crawler/settings                            24      0   100%
+crawler/urls                                 5      5     0%
+crawler/wsgi                                 4      4     0%
+engine/CrawlerEngine                        44     44     0%
+engine/__init__                              0      0   100%
+engine/db_engine/DbEngine                   40      0   100%
+engine/db_engine/__init__                    1      0   100%
+engine/db_engine/test_dbEngine              48      0   100%
+engine/search_engine/SearchEngine           18      3    83%
+engine/search_engine/__init__                1      0   100%
+engine/search_engine/test_searchEngine      21      0   100%
+manage                                       6      0   100%
+nlp/__init__                                 0      0   100%
+nlp/extractor                               59     59     0%
+ui/__init__                                  0      0   100%
+ui/admin                                     1      0   100%
+ui/forms                                     5      5     0%
+ui/migrations/__init__                       0      0   100%
+ui/models                                    1      0   100%
+ui/tests                                     1      0   100%
+ui/urls                                      7      7     0%
+ui/views                                    34     34     0%
+------------------------------------------------------------
+TOTAL                                      324    161    50%
+</code></pre>
