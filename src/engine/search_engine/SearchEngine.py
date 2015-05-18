@@ -3,7 +3,8 @@ import os
 
 class SearchEngine():
     # TODO call to DB (?)
-    requestedPhrases = eval(open(os.path.join(os.path.dirname(__file__), "tmp_db.phrases")).read())
+    requestedPhrases = eval(
+        open(os.path.join(os.path.dirname(__file__), "tmp_db.phrases")).read())
 
     def __init__(self):
         pass
@@ -23,11 +24,13 @@ class SearchEngine():
 
     def refresh_phrases_list(self):
         # TODO call to db (?)
-        self.requestedPhrases = eval(open(os.path.join(os.path.dirname(__file__), "tmp_db.phrases")).read())
+        self.requestedPhrases = eval(open(
+            os.path.join(os.path.dirname(__file__), "tmp_db.phrases")).read())
 
     def save_phrases_list_to_db(self):
         # TODO call to db
-        file = open(os.path.join(os.path.dirname(__file__), "tmp_db.phrases"),"w+")
+        file = open(os.path.join(os.path.dirname(__file__), "tmp_db.phrases"),
+                    "w+")
         file.write(str(self.requestedPhrases))
         file.flush()
         file.close()
@@ -38,7 +41,7 @@ class SearchEngine():
         return {"url": url, "results": results}
 
     def search(self, toSearch):
-        #TODO efektywniejsze i nie takie naiwne szukanie , moze regex? lub zewnetrza biblioteka
+        # TODO efektywniejsze i nie takie naiwne szukanie , moze regex? lub zewnetrza biblioteka
         results = []
         toSearch = toSearch.lower()
         for searchedPhrase in self.requestedPhrases:
