@@ -1,0 +1,2 @@
+Rozproszenie, dopracowanie wyszukiwania, poprawki w zakresie zwracanych wyników.
+Następne spotkanie 2.06.2015
