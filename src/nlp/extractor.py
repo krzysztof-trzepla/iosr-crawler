@@ -28,16 +28,16 @@ cfg["JJ+NN"] = "NNI"
 
 
 class NLPExtractor(object):
-    def __init__(self, query):
-        self.query = query
+    def __init__(self):
+        self.query = ''
 
-    def tokenize_query(self, query):
-        '''Split the query into single words/tokens'''
+    @staticmethod
+    def tokenize_query(query):
         tokens = nltk.word_tokenize(query)
         return tokens
 
-    def normalize_tags(self, tagged):
-        '''Normalize brown corpus' tags ("NN", "NN-PL", "NNS" > "NN")'''
+    @staticmethod
+    def normalize_tags(tagged):
         n_tagged = []
         for t in tagged:
             if t[1] == "NP-TL" or t[1] == "NP":
@@ -81,7 +81,6 @@ class NLPExtractor(object):
                 matches.append(t[0])
         return matches
 
-
-def keywords(query):
-    np_extractor = NLPExtractor(query)
-    return map(lambda keyword: keyword.lower(), np_extractor.extract())
+    def keywords(self, query):
+        self.query = query
+        return map(lambda keyword: keyword.lower(), self.extract())

@@ -9,15 +9,16 @@ from scrapy.selector import Selector
 from twisted.internet import reactor
 from .search_engine.SearchEngine import SearchEngine
 from .db_engine.DbEngine import DbEngine
-from nlp import extractor
+from nlp.extractor import NLPExtractor
 
 
 class CrawlerEngine(object):
     db_engine = DbEngine()
     search_engine = SearchEngine()
+    extractor = NLPExtractor()
 
     def add_query(self, user_id, query):
-        keywords = extractor.keywords(query)
+        keywords = self.extractor.keywords(query)
         self.db_engine.add_query(user_id, query)
         self.db_engine.add_keywords(keywords)
         self.search_engine.reload_keywords()

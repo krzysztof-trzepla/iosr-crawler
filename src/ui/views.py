@@ -4,7 +4,7 @@ from django.contrib.auth import logout as auth_logout
 from django.contrib.auth.decorators import login_required
 
 from .forms import QueryForm
-from nlp import extractor
+from nlp.extractor import NLPExtractor
 from engine.CrawlerEngine import CrawlerEngine
 
 
@@ -41,6 +41,7 @@ def query(request):
 @login_required(login_url='/')
 def queries(request):
     crawler = CrawlerEngine()
+    extractor = NLPExtractor()
     queries = map(lambda query: (query, ','.join(extractor.keywords(query))),
                   crawler.get_queries(request.user.id))
     return render(request, 'ui/queries.html', {'queries': queries})
