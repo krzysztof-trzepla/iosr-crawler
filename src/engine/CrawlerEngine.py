@@ -5,7 +5,7 @@ from scrapy.crawler import Crawler
 from scrapy.contrib.spiders import CrawlSpider, Rule
 from scrapy.contrib.linkextractors.sgml import SgmlLinkExtractor
 from scrapy.settings import Settings
-from scrapy.selector import Selector
+from bs4 import BeautifulSoup
 from twisted.internet import reactor
 from .search_engine.SearchEngine import SearchEngine
 from .db_engine.DbEngine import DbEngine
@@ -55,14 +55,12 @@ class CrawlerEngine(object):
 
         @staticmethod
         def parse_page(response):
-            text = ''.join(Selector(response).xpath(
-                "//body/descendant-or-self::*[not(self::script)]/text()").
-                extract()).strip()
+            soup = BeautifulSoup(response.body)
+
+            for script in soup(["script", "style"]):
+                script.extract()    # rip it out
+
+            text = " ".join(soup.get_text().split())
             url = response.url
             CrawlerEngine.search_engine.search_in_url(url, text)
-
-
-
-
-
 
