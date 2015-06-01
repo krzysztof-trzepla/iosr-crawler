@@ -129,3 +129,8 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 MESSAGE_TAGS = {
     constants.ERROR: 'danger'
 }
+
+AGENT_URLS = [
+    'http://172.17.84.75:8000',
+    'http://172.17.84.78:8000',
+]

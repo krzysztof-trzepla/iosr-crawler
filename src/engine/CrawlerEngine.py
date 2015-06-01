@@ -1,6 +1,9 @@
 import os
+import logging
+import requests
 from threading import Thread
 
+from django.conf import settings
 from scrapy.crawler import Crawler
 from scrapy.contrib.spiders import CrawlSpider, Rule
 from scrapy.contrib.linkextractors.sgml import SgmlLinkExtractor
@@ -11,6 +14,8 @@ from .search_engine.SearchEngine import SearchEngine
 from .db_engine.DbEngine import DbEngine
 from nlp.extractor import NLPExtractor
 
+logger = logging.getLogger(__name__)
+
 
 class CrawlerEngine(object):
     db_engine = DbEngine()
@@ -18,10 +23,19 @@ class CrawlerEngine(object):
     extractor = NLPExtractor()
 
     def add_query(self, user_id, query):
-        keywords = self.extractor.keywords(query)
+        keywords = self.extractor.run(query)
         self.db_engine.add_query(user_id, query)
         self.db_engine.add_keywords(keywords)
-        self.start_crawling()
+        self.notify_agents()
+
+    @staticmethod
+    def notify_agents():
+        for url in settings.AGENT_URLS:
+            try:
+                requests.get('{0}/start_crawling'.format(url))
+            except Exception as e:
+                logger.error('Cannot connect to agent {0} due to: {1}'.format(
+                    url, e.message))
 
     def get_queries(self, user_id):
         return self.db_engine.get_queries(user_id)

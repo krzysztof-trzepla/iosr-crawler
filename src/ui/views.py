@@ -2,6 +2,7 @@ from django.contrib import messages
 from django.shortcuts import redirect, render
 from django.contrib.auth import logout as auth_logout
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
 
 from .forms import QueryForm
 from nlp.extractor import NLPExtractor
@@ -42,9 +43,15 @@ def query(request):
 def queries(request):
     crawler = CrawlerEngine()
     extractor = NLPExtractor()
-    queries = map(lambda query: (query, ','.join(extractor.keywords(query))),
+    queries = map(lambda query: (query, ','.join(extractor.run(query))),
                   crawler.get_queries(request.user.id))
     return render(request, 'ui/queries.html', {'queries': queries})
+
+
+def start_crawling(_):
+    crawler = CrawlerEngine()
+    crawler.start_crawling()
+    return HttpResponse('')
 
 
 def logout(request):
