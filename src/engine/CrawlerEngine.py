@@ -21,7 +21,6 @@ class CrawlerEngine(object):
         keywords = self.extractor.keywords(query)
         self.db_engine.add_query(user_id, query)
         self.db_engine.add_keywords(keywords)
-        self.search_engine.reload_keywords()
         self.start_crawling()
 
     def get_queries(self, user_id):
@@ -31,6 +30,7 @@ class CrawlerEngine(object):
         return self.db_engine.get_urls(keywords)
 
     def start_crawling(self):
+        self.search_engine.reload_keywords()
         if not reactor.running:
             settings = Settings()
             crawler = Crawler(settings)
@@ -58,9 +58,8 @@ class CrawlerEngine(object):
             soup = BeautifulSoup(response.body)
 
             for script in soup(["script", "style"]):
-                script.extract()    # rip it out
+                script.extract()  # rip it out
 
             text = " ".join(soup.get_text().split())
             url = response.url
             CrawlerEngine.search_engine.search_in_url(url, text)
-

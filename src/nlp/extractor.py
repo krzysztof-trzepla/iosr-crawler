@@ -1,86 +1,137 @@
-import nltk
-from nltk.corpus import brown
-
-brown_train = brown.tagged_sents(categories='news')
-regexp_tagger = nltk.RegexpTagger(
-    [(r'^-?[0-9]+(.[0-9]+)?$', 'CD'),
-     (r'(-|:|;)$', ':'),
-     (r'\'*$', 'MD'),
-     (r'(The|the|A|a|An|an)$', 'AT'),
-     (r'.*able$', 'JJ'),
-     (r'^[A-Z].*$', 'NNP'),
-     (r'.*ness$', 'NN'),
-     (r'.*ly$', 'RB'),
-     (r'.*s$', 'NNS'),
-     (r'.*ing$', 'VBG'),
-     (r'.*ed$', 'VBD'),
-     (r'.*', 'NN')
-     ])
-unigram_tagger = nltk.UnigramTagger(brown_train, backoff=regexp_tagger)
-bigram_tagger = nltk.BigramTagger(brown_train, backoff=unigram_tagger)
-
-cfg = {}
-cfg["NNP+NNP"] = "NNP"
-cfg["NN+NN"] = "NNI"
-cfg["NNI+NN"] = "NNI"
-cfg["JJ+JJ"] = "JJ"
-cfg["JJ+NN"] = "NNI"
+import os
+import re
+import operator
 
 
 class NLPExtractor(object):
     def __init__(self):
-        self.query = ''
+        self.stop_words_path = os.path.join(
+            os.path.dirname(os.path.abspath(__file__)),
+            'stopwords.txt')
+        self.stop_words_pattern = self.build_stop_word_regex()
+
+    def build_stop_word_regex(self):
+        stop_word_list = self.load_stop_words()
+        stop_word_regex_list = []
+        for word in stop_word_list:
+            word_regex = r'\b' + word + r'(?![\w-])'
+            stop_word_regex_list.append(word_regex)
+        stop_word_pattern = re.compile('|'.join(stop_word_regex_list),
+                                       re.IGNORECASE)
+        return stop_word_pattern
+
+    def load_stop_words(self):
+        """
+        Utility function to load stop words from a file and return as a list of
+        words.
+        @return list A list of stop words.
+        """
+        stop_words = []
+        for line in open(self.stop_words_path):
+            if line.strip()[0:1] != "#":
+                for word in line.split():  # in case more than one per line
+                    stop_words.append(word)
+        return stop_words
 
     @staticmethod
-    def tokenize_query(query):
-        tokens = nltk.word_tokenize(query)
-        return tokens
+    def is_number(word):
+        try:
+            float(word) if '.' in word else int(word)
+            return True
+        except ValueError:
+            return False
 
     @staticmethod
-    def normalize_tags(tagged):
-        n_tagged = []
-        for t in tagged:
-            if t[1] == "NP-TL" or t[1] == "NP":
-                n_tagged.append((t[0], "NNP"))
-                continue
-            if t[1].endswith("-TL"):
-                n_tagged.append((t[0], t[1][:-3]))
-                continue
-            if t[1].endswith("S"):
-                n_tagged.append((t[0], t[1][:-1]))
-                continue
-            n_tagged.append((t[0], t[1]))
-        return n_tagged
+    def separate_words(text, min_word_return_size):
+        """
+        Utility function to return a list of all words that are have a length
+        greater than a specified number of characters.
+        @param text The text that must be split in to words.
+        @param min_word_return_size The minimum no of characters a word must
+        have to be included.
+        """
+        splitter = re.compile('[^a-zA-Z0-9_\\+\\-/]')
+        words = []
+        for single_word in splitter.split(text):
+            current_word = single_word.strip().lower()
+            # leave numbers in phrase, but don't count as words,
+            # since they tend to invalidate scores of their phrases
+            if len(current_word) > min_word_return_size and current_word != '' \
+                    and not NLPExtractor.is_number(current_word):
+                words.append(current_word)
+        return words
 
-    # Extract the main topics from the query
-    def extract(self):
+    @staticmethod
+    def split_sentences(text):
+        """
+        Utility function to return a list of sentences.
+        @param text The text that must be split in to sentences.
+        """
+        sentence_delimiters = re.compile(
+            u'[.!?,;:\t\\\\"\\(\\)\\\'\u2019\u2013]|\\s\\-\\s')
+        sentences = sentence_delimiters.split(text)
+        return sentences
 
-        tokens = self.tokenize_query(self.query)
-        tags = self.normalize_tags(bigram_tagger.tag(tokens))
+    @staticmethod
+    def generate_candidate_keywords(sentence_list, stopword_pattern):
+        phrase_list = []
+        for s in sentence_list:
+            tmp = re.sub(stopword_pattern, '|', s.strip())
+            phrases = tmp.split("|")
+            for phrase in phrases:
+                phrase = phrase.strip().lower()
+                if phrase != "":
+                    phrase_list.append(phrase)
+        return phrase_list
 
-        merge = True
-        while merge:
-            merge = False
-            for x in range(0, len(tags) - 1):
-                t1 = tags[x]
-                t2 = tags[x + 1]
-                key = "%s+%s" % (t1[1], t2[1])
-                value = cfg.get(key, '')
-                if value:
-                    merge = True
-                    tags.pop(x)
-                    tags.pop(x)
-                    match = "%s %s" % (t1[0], t2[0])
-                    pos = value
-                    tags.insert(x, (match, pos))
-                    break
+    @staticmethod
+    def calculate_word_scores(phrase_list):
+        word_frequency = {}
+        word_degree = {}
+        for phrase in phrase_list:
+            word_list = NLPExtractor.separate_words(phrase, 0)
+            word_list_length = len(word_list)
+            word_list_degree = word_list_length - 1
+            for word in word_list:
+                word_frequency.setdefault(word, 0)
+                word_frequency[word] += 1
+                word_degree.setdefault(word, 0)
+                word_degree[word] += word_list_degree
+        for item in word_frequency:
+            word_degree[item] = word_degree[item] + word_frequency[item]
 
-        matches = []
-        for t in tags:
-            if t[1] == "NNP" or t[1] == "NNI":
-                matches.append(t[0])
-        return matches
+        word_score = {}
+        for item in word_frequency:
+            word_score.setdefault(item, 0)
+            word_score[item] = word_degree[item] / (
+                word_frequency[item] * 1.0)
+        return word_score
 
-    def keywords(self, query):
-        self.query = query
-        return map(lambda keyword: keyword.lower(), self.extract())
+    @staticmethod
+    def generate_candidate_keyword_scores(phrase_list, word_score):
+        keyword_candidates = {}
+        for phrase in phrase_list:
+            keyword_candidates.setdefault(phrase, 0)
+            word_list = NLPExtractor.separate_words(phrase, 0)
+            candidate_score = 0
+            for word in word_list:
+                candidate_score += word_score[word]
+            keyword_candidates[phrase] = candidate_score
+        return keyword_candidates
+
+    def run(self, text):
+        sentence_list = NLPExtractor.split_sentences(text)
+        phrase_list = NLPExtractor.generate_candidate_keywords(
+            sentence_list, self.stop_words_pattern)
+        word_scores = NLPExtractor.calculate_word_scores(phrase_list)
+        keyword_candidates = NLPExtractor.generate_candidate_keyword_scores(
+            phrase_list,
+            word_scores)
+        sorted_keywords = sorted(keyword_candidates.iteritems(),
+                                 key=operator.itemgetter(1), reverse=True)
+
+        keywords = []
+        for keyword, _ in sorted_keywords:
+            keywords.extend(re.split(r'\s+', keyword))
+
+        return keywords
