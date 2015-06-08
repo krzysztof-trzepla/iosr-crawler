@@ -13,7 +13,8 @@ class NLPExtractor(object):
     def build_stop_word_regex(self):
         """
         Creates stop word regex.
-        @return stop word pattern.
+
+        :return: stop word pattern.
         """
         stop_word_list = self.load_stop_words()
         stop_word_regex_list = []
@@ -28,7 +29,8 @@ class NLPExtractor(object):
         """
         Utility function to load stop words from a file and return as a list of
         words.
-        @return list A list of stop words.
+
+        :return: list A list of stop words.
         """
         stop_words = []
         for line in open(self.stop_words_path):
@@ -41,8 +43,9 @@ class NLPExtractor(object):
     def is_number(word):
         """
         Checks whether word is a number.
-        @param word Word to be checked.
-        @return True or False
+
+        :param str word: Word to be checked.
+        :return: True or False
         """
         try:
             float(word) if '.' in word else int(word)
@@ -55,9 +58,11 @@ class NLPExtractor(object):
         """
         Utility function to return a list of all words that are have a length
         greater than a specified number of characters.
-        @param text The text that must be split in to words.
-        @param min_word_return_size The minimum no of characters a word must
-        have to be included.
+
+        :param str text: The text that must be split in to words.
+        :param int min_word_return_size: The minimum no of characters a word \
+        must have to be included.
+        :return: list of separated words.
         """
         splitter = re.compile('[^a-zA-Z0-9_\\+\\-/]')
         words = []
@@ -74,7 +79,9 @@ class NLPExtractor(object):
     def split_sentences(text):
         """
         Utility function to return a list of sentences.
-        @param text The text that must be split in to sentences.
+
+        :param str text: The text that must be split in to sentences.
+        :return: sentences List of sentences created due to split.
         """
         sentence_delimiters = re.compile(
             u'[.!?,;:\t\\\\"\\(\\)\\\'\u2019\u2013]|\\s\\-\\s')
@@ -85,9 +92,10 @@ class NLPExtractor(object):
     def generate_candidate_keywords(sentence_list, stopword_pattern):
         """
         Generates list of keywords candidates.
-        @param sentence_list List of sentences to be processed.
-        @param stopword_pattern Stop words pattern.
-        @return list of keywords
+
+        :param list sentence_list: List of sentences to be processed.
+        :param str stopword_pattern: Stop words pattern.
+        :return: list of keywords
         """
         phrase_list = []
         for s in sentence_list:
@@ -103,8 +111,9 @@ class NLPExtractor(object):
     def calculate_word_scores(phrase_list):
         """
         Calculates words scores based on their frequency and degree.
-        @param phrase_list List of phrases to be processed.
-        @return mapping between word and its score.
+
+        :param list phrase_list: List of phrases to be processed.
+        :return: mapping between word and its score.
         """
         word_frequency = {}
         word_degree = {}
@@ -131,9 +140,10 @@ class NLPExtractor(object):
     def generate_candidate_keyword_scores(phrase_list, word_score):
         """
         Generates scores for candidate keywords.
-        @param phrase_list List of phrases to be processed.
-        @param word_score Mapping between word and its score.
-        @return mapping between phrases and their scores.
+
+        :param list phrase_list: List of phrases to be processed.
+        :param map word_score: Mapping between word and its score.
+        :return: mapping between phrases and their scores.
         """
         keyword_candidates = {}
         for phrase in phrase_list:
@@ -148,8 +158,9 @@ class NLPExtractor(object):
     def run(self, text):
         """
         Extracts keywords from the text.
-        @param text Text to be processed.
-        @return list of keywords.
+
+        :param str text: Text to be processed.
+        :return: list of keywords.
         """
         sentence_list = NLPExtractor.split_sentences(text)
         phrase_list = NLPExtractor.generate_candidate_keywords(

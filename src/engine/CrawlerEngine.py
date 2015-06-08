@@ -23,6 +23,13 @@ class CrawlerEngine(object):
     extractor = NLPExtractor()
 
     def add_query(self, user_id, query):
+        """
+        Add crawling query for given user.
+
+        :param int user_id: ID of user associated with the query.
+        :param str query: User's query.
+        """
+
         keywords = self.extractor.run(query)
         logger.info("Found following keywords for query '{0}': '{1}'".
                     format(query, "', '".join(keywords)))
@@ -32,6 +39,10 @@ class CrawlerEngine(object):
 
     @staticmethod
     def notify_agents():
+        """
+        Notifies agent about new crawling query.
+        """
+
         for url in settings.AGENT_URLS:
             try:
                 requests.get('{0}/start_crawling'.format(url))
@@ -40,12 +51,29 @@ class CrawlerEngine(object):
                     url, e.message))
 
     def get_user_queries(self, user_id):
+        """
+        Retrieves user queries form database.
+
+        :param int user_id: Id of user associated with the query.
+        :return: list of user queries.
+        """
+
         return self.db_engine.get_user_queries(user_id)
 
     def get_urls(self, query):
+        """
+        Retrieves all URLs associated with given query form database.
+
+        :return: list of URLs.
+        """
+
         return self.db_engine.get_urls(query)
 
     def start_crawling(self):
+        """
+        Notifies all agents and if crawling process in not started, starts it.
+        """
+
         self.search_engine.reload_queries()
         if not reactor.running:
             settings = Settings()
