@@ -1,6 +1,9 @@
 language: python
 python:
   - "2.7"
+cache:
+  - apt
+  - pip
 # command to install dependencies
 install:
   - "pip install -r requirements.txt"
