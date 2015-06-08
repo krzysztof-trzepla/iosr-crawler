@@ -11,4 +11,4 @@ before_script:
 # command to run tests
 script:
   - coverage run --source='src' src/manage.py test
-  - coverage report
+  - coverage report --omit=*test*,*settings*
