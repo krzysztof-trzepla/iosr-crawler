@@ -18,9 +18,10 @@ logger = logging.getLogger(__name__)
 
 
 class CrawlerEngine(object):
-    db_engine = DbEngine()
-    search_engine = SearchEngine()
-    extractor = NLPExtractor()
+    def __init__(self):
+        self.db_engine = DbEngine()
+        self.search_engine = SearchEngine()
+        self.extractor = NLPExtractor()
 
     def add_query(self, user_id, query):
         """
