@@ -110,35 +110,35 @@ of IP addresses or given domain.
 
 ##### Coverage report #####
 
+Continuous integration server is available at:
+https://travis-ci.org/krzysztof-trzepla/iosr-crawler
+
+[![Build Status](https://travis-ci.org/krzysztof-trzepla/iosr-crawler.svg?branch=master)](https://travis-ci.org/krzysztof-trzepla/iosr-crawler)
+
 <pre><code>
-Name                                     Stmts   Miss  Cover
-------------------------------------------------------------
-__init__                                     0      0   100%
-crawler/__init__                             0      0   100%
-crawler/config                               4      0   100%
-crawler/settings                            24      0   100%
-crawler/urls                                 5      5     0%
-crawler/wsgi                                 4      4     0%
-engine/CrawlerEngine                        45     45     0%
-engine/__init__                              0      0   100%
-engine/db_engine/DbEngine                   40      0   100%
-engine/db_engine/__init__                    1      0   100%
-engine/db_engine/test_dbEngine              48      0   100%
-engine/search_engine/SearchEngine           18      3    83%
-engine/search_engine/__init__                1      0   100%
-engine/search_engine/test_searchEngine      21      0   100%
-manage                                       6      0   100%
-nlp/__init__                                 0      0   100%
-nlp/extractor                               59     11    81%
-nlp/test_extractor                           7      0   100%
-ui/__init__                                  0      0   100%
-ui/admin                                     1      0   100%
-ui/forms                                     5      5     0%
-ui/migrations/__init__                       0      0   100%
-ui/models                                    1      0   100%
-ui/tests                                     1      0   100%
-ui/urls                                      7      7     0%
-ui/views                                    34     34     0%
-------------------------------------------------------------
-TOTAL                                      332    114    66%
+Name                                    Stmts   Miss  Cover
+-----------------------------------------------------------
+src/__init__                                0      0   100%
+src/crawler/__init__                        0      0   100%
+src/crawler/config                          4      0   100%
+src/crawler/urls                            5      0   100%
+src/crawler/wsgi                            4      4     0%
+src/engine/CrawlerEngine                   59     24    59%
+src/engine/__init__                         0      0   100%
+src/engine/db_engine/DbEngine              47      0   100%
+src/engine/db_engine/__init__               1      0   100%
+src/engine/search_engine/SearchEngine      25      4    84%
+src/engine/search_engine/__init__           1      0   100%
+src/manage                                  6      0   100%
+src/nlp/__init__                            0      0   100%
+src/nlp/extractor                          89      1    99%
+src/ui/__init__                             0      0   100%
+src/ui/admin                                1      0   100%
+src/ui/forms                                5      0   100%
+src/ui/migrations/__init__                  0      0   100%
+src/ui/models                               1      0   100%
+src/ui/urls                                 8      0   100%
+src/ui/views                               38     13    66%
+-----------------------------------------------------------
+TOTAL                                     294     46    84%
 </code></pre>
