@@ -1,6 +1,8 @@
 IOSR crawler
 ============
 
+[![Build Status](https://travis-ci.org/krzysztof-trzepla/iosr-crawler.svg?branch=master)](https://travis-ci.org/krzysztof-trzepla/iosr-crawler)
+
 Semantic web crawler developed during Software Engineering of Distributed
 Systems course at AGH university of Science and Technology, Cracow 2015.
 
