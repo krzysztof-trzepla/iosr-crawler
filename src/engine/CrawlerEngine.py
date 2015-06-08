@@ -24,8 +24,10 @@ class CrawlerEngine(object):
 
     def add_query(self, user_id, query):
         keywords = self.extractor.run(query)
+        logger.info("Found following keywords for query '{0}': '{1}'".
+                    format(query, "', '".join(keywords)))
         self.db_engine.add_query(user_id, query)
-        self.db_engine.add_keywords(keywords)
+        self.db_engine.add_keywords(query, keywords)
         self.notify_agents()
 
     @staticmethod
@@ -37,14 +39,14 @@ class CrawlerEngine(object):
                 logger.error('Cannot connect to agent {0} due to: {1}'.format(
                     url, e.message))
 
-    def get_queries(self, user_id):
-        return self.db_engine.get_queries(user_id)
+    def get_user_queries(self, user_id):
+        return self.db_engine.get_user_queries(user_id)
 
-    def get_urls(self, keywords):
-        return self.db_engine.get_urls(keywords)
+    def get_urls(self, query):
+        return self.db_engine.get_urls(query)
 
     def start_crawling(self):
-        self.search_engine.reload_keywords()
+        self.search_engine.reload_queries()
         if not reactor.running:
             settings = Settings()
             crawler = Crawler(settings)
@@ -72,7 +74,7 @@ class CrawlerEngine(object):
             soup = BeautifulSoup(response.body)
 
             for script in soup(["script", "style"]):
-                script.extract()  # rip it out
+                script.extract()
 
             text = " ".join(soup.get_text().split())
             url = response.url

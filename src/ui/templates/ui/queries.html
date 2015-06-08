@@ -54,9 +54,9 @@
         {% if queries %}
         <h3>Queries</h3>
         <ul class="queries">
-            {% for query, keywords in queries %}
+            {% for query in queries %}
             <li>
-                <a href="/query?keywords={{ keywords }}">{{ query }}</a>
+                <a href="/query?q={{ query }}">{{ query }}</a>
             </li>
             {% endfor %}
         </ul>

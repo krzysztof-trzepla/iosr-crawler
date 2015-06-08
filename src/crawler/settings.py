@@ -104,6 +104,49 @@ DATABASES = {
     }
 }
 
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s",
+            'datefmt': "%d/%b/%Y %H:%M:%S"
+        },
+        'simple': {
+            'format': '%(levelname)s %(message)s'
+        },
+    },
+    'handlers': {
+        'console': {
+            'level': 'INFO',
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple'
+        },
+        'debug': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': 'debug.log',
+            'formatter': 'verbose'
+        },
+        'info': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': 'info.log',
+            'formatter': 'simple'
+        }
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['debug'],
+            'propagate': True,
+            'level': 'DEBUG',
+        },
+        'engine': {
+            'handlers': ['console', 'info'],
+            'level': 'INFO',
+        },
+    }
+}
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
@@ -131,6 +174,9 @@ MESSAGE_TAGS = {
 }
 
 AGENT_URLS = [
-    'http://172.17.84.75:8000',
-    'http://172.17.84.78:8000',
+    'http://127.0.0.1:8000',
+    # 'http://172.17.84.75:8000',
+    # 'http://172.17.84.78:8000',
 ]
+
+KEYWORD_THRESHOLD = 0.5

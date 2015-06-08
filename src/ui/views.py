@@ -33,18 +33,16 @@ def home(request):
 @login_required(login_url='/')
 def query(request):
     crawler = CrawlerEngine()
-    keywords = request.GET.get('keywords').split(',')
-    keywords = filter(lambda keyword: len(keyword) > 0, keywords)
-    urls = crawler.get_urls(keywords)
+    query = request.GET.get('q')
+    print(query)
+    urls = crawler.get_urls(query)
     return render(request, 'ui/query.html', {'urls': urls})
 
 
 @login_required(login_url='/')
 def queries(request):
     crawler = CrawlerEngine()
-    extractor = NLPExtractor()
-    queries = map(lambda query: (query, ','.join(extractor.run(query))),
-                  crawler.get_queries(request.user.id))
+    queries = crawler.get_user_queries(request.user.id)
     return render(request, 'ui/queries.html', {'queries': queries})
 
 

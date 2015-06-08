@@ -132,6 +132,6 @@ class NLPExtractor(object):
 
         keywords = []
         for keyword, _ in sorted_keywords:
-            keywords.extend(re.split(r'\s+', keyword))
+            keywords.append(keyword)
 
         return keywords

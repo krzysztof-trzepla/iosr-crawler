@@ -12,5 +12,5 @@ class TestExtractor(TestCase):
         text = 'Java and Python programming books.'
 
         # then
-        self.assertEqual(['python', 'programming', 'books', 'java'],
+        self.assertEqual(['python programming books', 'java'],
                          extractor.run(text))
