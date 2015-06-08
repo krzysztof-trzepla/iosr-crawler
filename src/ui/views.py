@@ -34,7 +34,6 @@ def home(request):
 def query(request):
     crawler = CrawlerEngine()
     query = request.GET.get('q')
-    print(query)
     urls = crawler.get_urls(query)
     return render(request, 'ui/query.html', {'urls': urls})
 

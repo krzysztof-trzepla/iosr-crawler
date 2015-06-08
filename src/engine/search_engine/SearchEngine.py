@@ -25,6 +25,7 @@ class SearchEngine(object):
             for keyword in keywords:
                 if keyword in content:
                     found += 1
-            if float(found) / len(keywords) >= settings.KEYWORD_THRESHOLD:
+            if len(keywords) > 0 and float(found) / len(
+                    keywords) >= settings.KEYWORD_THRESHOLD:
                 queries.add(query)
         return queries
