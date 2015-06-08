@@ -4,13 +4,14 @@ python:
 cache:
   - apt
   - pip
+sudo: required
 # command to install dependencies
 install:
   - "pip install -r requirements.txt"
 services:
   - riak
 before_script:
-  - ./src/riak_setup.sh
+  - sudo ./src/riak_setup.sh
 # command to run tests
 script:
   - coverage run --source='src' src/manage.py test
