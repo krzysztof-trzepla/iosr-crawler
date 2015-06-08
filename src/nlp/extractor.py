@@ -11,6 +11,10 @@ class NLPExtractor(object):
         self.stop_words_pattern = self.build_stop_word_regex()
 
     def build_stop_word_regex(self):
+        """
+        Creates stop word regex.
+        @return stop word pattern.
+        """
         stop_word_list = self.load_stop_words()
         stop_word_regex_list = []
         for word in stop_word_list:
@@ -35,6 +39,11 @@ class NLPExtractor(object):
 
     @staticmethod
     def is_number(word):
+        """
+        Checks whether word is a number.
+        @param word Word to be checked.
+        @return True or False
+        """
         try:
             float(word) if '.' in word else int(word)
             return True
@@ -74,6 +83,12 @@ class NLPExtractor(object):
 
     @staticmethod
     def generate_candidate_keywords(sentence_list, stopword_pattern):
+        """
+        Generates list of keywords candidates.
+        @param sentence_list List of sentences to be processed.
+        @param stopword_pattern Stop words pattern.
+        @return list of keywords
+        """
         phrase_list = []
         for s in sentence_list:
             tmp = re.sub(stopword_pattern, '|', s.strip())
@@ -86,6 +101,11 @@ class NLPExtractor(object):
 
     @staticmethod
     def calculate_word_scores(phrase_list):
+        """
+        Calculates words scores based on their frequency and degree.
+        @param phrase_list List of phrases to be processed.
+        @return mapping between word and its score.
+        """
         word_frequency = {}
         word_degree = {}
         for phrase in phrase_list:
@@ -109,6 +129,12 @@ class NLPExtractor(object):
 
     @staticmethod
     def generate_candidate_keyword_scores(phrase_list, word_score):
+        """
+        Generates scores for candidate keywords.
+        @param phrase_list List of phrases to be processed.
+        @param word_score Mapping between word and its score.
+        @return mapping between phrases and their scores.
+        """
         keyword_candidates = {}
         for phrase in phrase_list:
             keyword_candidates.setdefault(phrase, 0)
@@ -120,6 +146,11 @@ class NLPExtractor(object):
         return keyword_candidates
 
     def run(self, text):
+        """
+        Extracts keywords from the text.
+        @param text Text to be processed.
+        @return list of keywords.
+        """
         sentence_list = NLPExtractor.split_sentences(text)
         phrase_list = NLPExtractor.generate_candidate_keywords(
             sentence_list, self.stop_words_pattern)

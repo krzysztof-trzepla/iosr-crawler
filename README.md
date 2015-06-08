@@ -19,10 +19,15 @@ Requirements
 The list of requirements is presented below. It is an output of `pip freeze`
 command run in virtual environment.
 
+* beautifulsoup4==4.3.2
 * cffi==0.9.2
+* coverage==3.7.1
 * cryptography==0.8.2
+* cssselect==0.9.1
 * Django==1.8
 * enum34==1.0.4
+* lxml==3.4.4
+* mock==1.0.1
 * nltk==3.0.2
 * oauthlib==0.7.2
 * protobuf==2.5.0
@@ -32,11 +37,29 @@ command run in virtual environment.
 * pyOpenSSL==0.15.1
 * python-openid==2.2.5
 * python-social-auth==0.2.5
+* queuelib==1.2.2
 * requests==2.6.0
 * requests-oauthlib==0.4.2
 * riak==2.2.0
 * riak-pb==2.0.0.16
+* Scrapy==0.24.6
 * six==1.9.0
+* Twisted==15.1.0
+* w3lib==1.11.0
+* wheel==0.24.0
+* zope.interface==4.1.2
+
+Settings
+--------
+
+In order to configure agents provide list of their endpoints in AGENTS_URL
+variable located in crawler/settings.py file. It should be reachable for all
+agents, so that they can communicate.
+
+It is also possible to adjust crawling accuracy by setting KEYWORDS_THRESHOLD
+value. It depicts how many keywords out of all keyword of given query should be
+found on the page to connect this page with the query. Value 1 means that all
+keywords should be found.
 
 Architecture
 ------------
